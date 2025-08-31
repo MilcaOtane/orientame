@@ -1,14 +1,15 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-st.title('Descubre tu camino, diseña tu futuro con OrientaMe')
+st.title('ONG OrientaMe')
 
 import streamlit as st
 
 st.set_page_config(page_title="OrientaMe", page_icon="🧭", layout="wide")
 
 # --- Título principal ---
-st.markdown("<h2 style='text-align:center; color:#0066cc;'>DESCUBRE TU CAMINO, DISEÑA TU FUTURO CON ORIENTAME</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align:center; color:#0066cc;'>DESCUBRE TU CAMINO
+DISEÑA TU FUTURO CON ORIENTAME</h2>", unsafe_allow_html=True)
 
 # --- Distribución de columnas ---
 col1, col2, col3, col4 = st.columns(4)
