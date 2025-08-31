@@ -73,6 +73,9 @@ with col_right:
 
 
 ##---AAREGLANDO EL BOT 
+import streamlit as st
+
+# --- estilos del globo ---
 st.markdown("""
 <style>
 .ori-bubble {
@@ -83,33 +86,29 @@ st.markdown("""
   border: 2px solid #f2d7d7;
   border-radius: 16px;
   padding: 10px 14px;
-  max-width: 220px;
+  max-width: 260px;
   line-height: 1.35;
   box-shadow: 0 6px 14px rgba(0,0,0,.12);
 }
 .ori-bubble:after {
   content: "";
   position: absolute;
-  right: -10px;          /* 👈 mueve la cola (izquierda o derecha) */
-  top: 18px;             /* 👈 altura de la cola */
+  right: -10px;      /* cola a la derecha apuntando a ORI */
+  top: 18px;
   width: 0; height: 0;
-  border-left: 12px solid #ffffff;   /* color centro de la cola */
+  border-left: 12px solid #ffffff;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
-  filter: drop-shadow(1px 0 0 #f2d7d7); /* bordecito de la cola */
+  filter: drop-shadow(1px 0 0 #f2d7d7);
 }
-.ori-row {display:flex; align-items:flex-end; gap:12px;}
-.ori-row .ori-left {order: 1;}
-.ori-row .ori-right {order: 2;}
-.ori-img {width:210px;}
 </style>
-
-<div class="ori-row">
-  <div class="ori-left">
-    <div class="ori-bubble">¡Hey! Soy <b>ORI</b> 😎<br>tu compañero en esta aventura</div>
-  </div>
-  <div class="ori-right">
-    <img class="ori-img" src="ori.png" alt="ORI"/>
-  </div>
-</div>
 """, unsafe_allow_html=True)
+
+# --- layout: globo a la izquierda, ORI a la derecha ---
+c1, c2 = st.columns([1,1])
+with c1:
+    st.markdown('<div class="ori-bubble">¡Hey! Soy <b>ORI</b> 😎<br>tu compañero en esta aventura</div>',
+                unsafe_allow_html=True)
+with c2:
+    st.image("ori.png", width=220)   # asegúrate que ori.png esté en la misma carpeta que app.py
+
