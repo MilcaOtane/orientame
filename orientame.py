@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-st.title('OrientaMe ONG')
 
+st.markdown(
+    "<h1 style='text-align: center; color: #0066cc;'>OrientaMe ONG</h1>",
+    unsafe_allow_html=True
+)
 import streamlit as st
-
+#---Nombre de la pagina
 st.set_page_config(page_title="OrientaMe", page_icon="🧭", layout="wide")
 
 # --- Título principal ---
