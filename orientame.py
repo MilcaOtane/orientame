@@ -22,7 +22,7 @@ st.set_page_config(page_title="OrientaMe", page_icon="🧭", layout="wide")
 
 # --- Título principal ---
 st.markdown(
-    "<h2 style='text-align:center; color:#0066cc;'>DESCUBRE TU CAMINO<br>DISEÑA TU FUTURO CON ORIENTAME</h2>",
+    "<h2 style='text-align:center; color:white;'>DESCUBRE TU CAMINO<br>DISEÑA TU FUTURO CON ORIENTAME</h2>",
     unsafe_allow_html=True
 )
 
