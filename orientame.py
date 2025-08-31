@@ -56,30 +56,45 @@ with col_right:
     st.info("¡Hey! Soy ORI 🐺 tu compañero en esta aventura")
 
 ##---MODO TARJETAS
-# Tarjetas
-cards = [
-    ("https://ejemplo.com/tests", "💡", "Test Vocacionales",
-     "¿Aún no sabes qué carrera elegir?"),
-    ("https://ejemplo.com/charlas", "🗝️", "Charlas de Profesionales con Estudiantes",
-     "Escucha y conversa con pros de diferentes carreras."),
-    ("https://ejemplo.com/apps", "🗂️", "Apps sobre Cursos Preuniversitarios",
-     "Refuerza lo que ya sabes y prepárate para la U."),
-    ("https://ejemplo.com/becas", "🎯", "Becas para Estudiar en Universidades",
-     "¡Que nada te detenga!"),
-]
+import streamlit as st
 
-c1,c2,c3,c4 = st.columns(4)
-for col, (url, icon, title, desc) in zip([c1,c2,c3,c4], cards):
-    with col:
-        st.markdown(
-            f"""
-            <a class="cardlink" href="{url}" target="_blank">
-              <div class="card">
-                <h3><span class="emoji">{icon}</span>{title}</h3>
-                <p>{desc}</p>
-              </div>
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
+st.set_page_config(page_title="OrientaMe ONG", page_icon="🧭", layout="wide")
 
+# --- CSS tarjetas con color ---
+st.markdown("""
+<style>
+.stApp { background: #42b9f5; }
+
+.card {
+  background: #fff5f5;   /* 👈 aquí el colorcito del fondo de la tarjeta */
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 140px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.card h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+.card p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# --- Ejemplo tarjeta ---
+st.markdown("""
+<div class="card">
+  <div style="font-size:28px;">💡</div>
+  <h3>Test Vocacionales</h3>
+  <p>¿Aún no sabes qué carrera elegir?</p>
+</div>
+""", unsafe_allow_html=True)
