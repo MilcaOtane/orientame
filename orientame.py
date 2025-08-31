@@ -2,6 +2,18 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+# --- Cambiar color de fondo ---
+page_bg = """
+<style>
+.stApp {
+    background-color: #42b9f5; /* Celeste */
+}
+</style>
+"""
+
+st.markdown(page_bg, unsafe_allow_html=True)
+
+#---Nomnbre de la ONG izquierda
 st.title("OrientaMe ONG")
 
 import streamlit as st
