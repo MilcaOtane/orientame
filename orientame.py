@@ -69,35 +69,32 @@ for col, (icon, title, desc) in zip([col1, col2, col3, col4], cards):
 ##---AAREGLANDO A ORIORI BOT 
 import base64, streamlit as st
 
-# --- convierte tu imagen a base64 
+# --- convierte la imagen a base64 ---
 def img64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
 ori_b64 = img64("ori.png")
 
-st.markdown("""
+st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
 
-/* contenedor fijo abajo-derecha */
-.ori-container{
+/* contenedor fijo */
+.ori-container{ 
   position: fixed; bottom: 20px; right: 20px;
-  display:flex; align-items:flex-start; gap: 4px; z-index: 9999;
+  display:flex; align-items:flex-start; gap:4px; z-index:9999;
 }
+.ori-img{ width:180px; }
 
-/* imagen de ORI */
-.ori-img{ width: 180px; }
-
-/* globo base */
-.ori-bubble{
-  font-family: 'Questrial', sans-serif;
+/* burbuja */
+.ori-bubble{ 
+  font-family:'Questrial', sans-serif;
   background:#fff; color:#0b1b3a;
   border:2px solid #f2d7d7; border-radius:16px;
   padding:10px 14px; box-shadow:0 6px 14px rgba(0,0,0,.12);
-  position:relative; min-height: 42px;
+  position:relative; min-height:42px;
 }
-/* cola del globo */
 .ori-bubble:after{
   content:""; position:absolute; right:-10px; top:18px;
   width:0;height:0;
@@ -107,29 +104,34 @@ st.markdown("""
   filter: drop-shadow(1px 0 0 #f2d7d7);
 }
 
-/* stack de mensajes (se superponen) */
-.msg-stack{ position:relative; width: 260px; height: 22px; } /* alto de una línea */
-.msg{ 
+/* stack de mensajes */
+.msg-stack{ position:relative; width:260px; height:22px; }
+.msg{
   position:absolute; top:0; left:0;
   white-space:nowrap; overflow:hidden;
-  border-right:2px solid #0b1b3a; /* cursor */
 }
+/* cursor solo al final */
+.msg::after{
+  content:"|";
+  display:inline-block;
+  margin-left:2px;
+  animation: blink .8s step-end infinite;
+  opacity:0;
+}
+@keyframes blink {50%{opacity:1;}}
 
-/* parpadeo del cursor */
-@keyframes blink{50%{ border-color: transparent; }}
-
-/* ---  ROTACIÓN + TYPING (3 mensajes, ciclo 12s)  --- */
-/* MSG 1: 0-30% visible con typing */
-.msg1{ animation: type1 12s steps(30,end) infinite, blink .8s step-end infinite; }
+/* --- typing y rotación --- */
+.msg1{ animation: type1 12s steps(30,end) infinite; }
 @keyframes type1{
   0%{width:0}
-  20%{width:100%}   /* escribe */
-  30%{width:100%}   /* pausa leído */
-  33.33%{width:0}   /* borra y oculta */
+  20%{width:100%}
+  30%{width:100%}
+  33.33%{width:0}
   100%{width:0}
 }
-/* MSG 2: 33%-66% */
-.msg2{ animation: type2 12s steps(30,end) infinite, blink .8s step-end infinite; }
+.msg1::after{ animation-delay:2.4s; }  /* aparece tras escribir */
+
+.msg2{ animation: type2 12s steps(30,end) infinite; }
 @keyframes type2{
   0%{width:0}
   33.33%{width:0}
@@ -138,8 +140,9 @@ st.markdown("""
   66.66%{width:0}
   100%{width:0}
 }
-/* MSG 3: 66%-100% */
-.msg3{ animation: type3 12s steps(30,end) infinite, blink .8s step-end infinite; }
+.msg2::after{ animation-delay:6s; }
+
+.msg3{ animation: type3 12s steps(30,end) infinite; }
 @keyframes type3{
   0%{width:0}
   66.66%{width:0}
@@ -147,6 +150,7 @@ st.markdown("""
   96.66%{width:100%}
   100%{width:0}
 }
+.msg3::after{ animation-delay:9.6s; }
 </style>
 
 <div class="ori-container">
@@ -157,8 +161,9 @@ st.markdown("""
       <span class="msg msg3">Explora tests, apps y becas 🚀</span>
     </div>
   </div>
-  <img class="ori-img" src="data:image/png;base64,{{B64}}" alt="ORI" />
+  <img class="ori-img" src="data:image/png;base64,{ori_b64}" alt="ORI"/>
 </div>
-""".replace("{{B64}}", ori_b64), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+
 
 
