@@ -70,3 +70,47 @@ col_left, col_right = st.columns([2,1])
 with col_right:
     st.image("ori.png", width=200)
     st.info("¡Hey! Soy ORI 🐺 tu compañero en esta aventura")
+
+
+##---AAREGLANDO EL BOT 
+# === ORI con globo de diálogo con cola ===
+st.markdown("""
+<style>
+.ori-bubble {
+  position: relative;
+  display: inline-block;
+  background: #ffffff;
+  color: #0b1b3a;
+  border: 2px solid #f2d7d7;
+  border-radius: 16px;
+  padding: 10px 14px;
+  max-width: 220px;
+  line-height: 1.35;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+.ori-bubble:after {
+  content: "";
+  position: absolute;
+  right: -10px;          /* mueve la cola (izq/der) */
+  top: 18px;             /* altura de la cola */
+  width: 0; height: 0;
+  border-left: 12px solid #ffffff;   /* color centro de la cola */
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  filter: drop-shadow(1px 0 0 #f2d7d7); /* bordecito de la cola */
+}
+.ori-row {display:flex; align-items:flex-end; gap:12px;}
+.ori-row .ori-left {order: 1;}
+.ori-row .ori-right {order: 2;}
+.ori2 {width:210px;}
+</style>
+
+<div class="ori-row">
+  <div class="ori-left">
+    <div class="ori-bubble">¡Hey! Soy <b>ORI</b> 😎<br>tu compañero en esta aventura</div>
+  </div>
+  <div class="ori-right">
+    <img class="ori2" src="ori.png" alt="ORI"/>
+  </div>
+</div>
+""", unsafe_allow_html=True)
