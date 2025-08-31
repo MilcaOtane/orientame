@@ -73,7 +73,6 @@ with col_right:
 
 
 ##---AAREGLANDO EL BOT 
-# === ORI con globo de diálogo con cola ===
 st.markdown("""
 <style>
 .ori-bubble {
@@ -91,8 +90,8 @@ st.markdown("""
 .ori-bubble:after {
   content: "";
   position: absolute;
-  right: -10px;          /* mueve la cola (izq/der) */
-  top: 18px;             /* altura de la cola */
+  right: -10px;          /* 👈 mueve la cola (izquierda o derecha) */
+  top: 18px;             /* 👈 altura de la cola */
   width: 0; height: 0;
   border-left: 12px solid #ffffff;   /* color centro de la cola */
   border-top: 12px solid transparent;
@@ -102,7 +101,7 @@ st.markdown("""
 .ori-row {display:flex; align-items:flex-end; gap:12px;}
 .ori-row .ori-left {order: 1;}
 .ori-row .ori-right {order: 2;}
-.ori2 {width:210px;}
+.ori-img {width:210px;}
 </style>
 
 <div class="ori-row">
@@ -110,7 +109,7 @@ st.markdown("""
     <div class="ori-bubble">¡Hey! Soy <b>ORI</b> 😎<br>tu compañero en esta aventura</div>
   </div>
   <div class="ori-right">
-    <img class="ori2" src="ori.png" alt="ORI"/>
+    <img class="ori-img" src="ori.png" alt="ORI"/>
   </div>
 </div>
 """, unsafe_allow_html=True)
