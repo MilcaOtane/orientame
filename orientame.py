@@ -67,6 +67,7 @@ for col, (icon, title, desc) in zip([col1, col2, col3, col4], cards):
 
 
 ##---AAREGLANDO EL BOT 
+
 import base64
 import streamlit as st
 
@@ -78,9 +79,11 @@ ori_b64 = img64("ori.png")
 
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
 @keyframes fadeBounce {
   0%   { opacity: 0; transform: translateY(20px) scale(0.9); }
-  60%  { opacity: 1; transform: translateY(-10px) scale(1.05); }
+  60%  { opacity: 1; transform: translateY(-6px) scale(1.05); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
@@ -96,6 +99,7 @@ st.markdown("""
   line-height: 1.35;
   box-shadow: 0 6px 14px rgba(0,0,0,.12);
   font-size: 15px;
+  font-family: 'Questrial', sans-serif;   /* 👈 Fuente personalizada */
   animation: fadeBounce 1s ease;
 }
 .ori-bubble:after {
@@ -115,7 +119,7 @@ st.markdown("""
   right: 20px;
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 4px;   /* 👈 ahora más cerquita */
   z-index: 9999;
 }
 .ori-img {
@@ -131,5 +135,4 @@ st.markdown(f"""
   <img class="ori-img" src="data:image/png;base64,{ori_b64}" alt="ORI"/>
 </div>
 """, unsafe_allow_html=True)
-
 
