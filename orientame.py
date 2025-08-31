@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-st.title('ONG OrientaMe')
+st.title('OrientaMe ONG')
 
 import streamlit as st
 
