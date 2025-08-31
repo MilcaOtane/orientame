@@ -52,6 +52,34 @@ st.write("---")
 col_left, col_right = st.columns([2,1])
 
 with col_right:
-    st.image("ori.png", width=200)  # Aquí coloca tu imagen de ORI en el mismo folder
+    st.image("ori.png", width=200)  
     st.info("¡Hey! Soy ORI 🐺 tu compañero en esta aventura")
+
+##---MODO TARJETAS
+# Tarjetas
+cards = [
+    ("https://ejemplo.com/tests", "💡", "Test Vocacionales",
+     "¿Aún no sabes qué carrera elegir?"),
+    ("https://ejemplo.com/charlas", "🗝️", "Charlas de Profesionales con Estudiantes",
+     "Escucha y conversa con pros de diferentes carreras."),
+    ("https://ejemplo.com/apps", "🗂️", "Apps sobre Cursos Preuniversitarios",
+     "Refuerza lo que ya sabes y prepárate para la U."),
+    ("https://ejemplo.com/becas", "🎯", "Becas para Estudiar en Universidades",
+     "¡Que nada te detenga!"),
+]
+
+c1,c2,c3,c4 = st.columns(4)
+for col, (url, icon, title, desc) in zip([c1,c2,c3,c4], cards):
+    with col:
+        st.markdown(
+            f"""
+            <a class="cardlink" href="{url}" target="_blank">
+              <div class="card">
+                <h3><span class="emoji">{icon}</span>{title}</h3>
+                <p>{desc}</p>
+              </div>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
 
