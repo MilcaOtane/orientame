@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 st.markdown(
-    "<h3 style='text-align: left; color: #0066cc;'><b>OrientaMe ONG</b></h3>",
+    "<h3 style='text-align: left; color: #0000cc;'><b>OrientaMe ONG</b></h3>",
     unsafe_allow_html=True
 )
 import streamlit as st
