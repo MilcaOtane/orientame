@@ -67,11 +67,23 @@ for col, (icon, title, desc) in zip([col1, col2, col3, col4], cards):
 
 
 ##---AAREGLANDO EL BOT 
+import base64
 import streamlit as st
 
-# --- estilos del globo ---
+def img64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+ori_b64 = img64("ori.png")
+
 st.markdown("""
 <style>
+@keyframes fadeBounce {
+  0%   { opacity: 0; transform: translateY(20px) scale(0.9); }
+  60%  { opacity: 1; transform: translateY(-10px) scale(1.05); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .ori-bubble {
   position: relative;
   display: inline-block;
@@ -80,14 +92,16 @@ st.markdown("""
   border: 2px solid #f2d7d7;
   border-radius: 16px;
   padding: 10px 14px;
-  max-width: 260px;
+  max-width: 220px;
   line-height: 1.35;
   box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  font-size: 15px;
+  animation: fadeBounce 1s ease;
 }
 .ori-bubble:after {
   content: "";
   position: absolute;
-  right: -10px;      /* cola a la derecha apuntando a ORI */
+  right: -10px;
   top: 18px;
   width: 0; height: 0;
   border-left: 12px solid #ffffff;
@@ -95,14 +109,27 @@ st.markdown("""
   border-bottom: 12px solid transparent;
   filter: drop-shadow(1px 0 0 #f2d7d7);
 }
+.ori-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 9999;
+}
+.ori-img {
+  width: 180px;
+  animation: fadeBounce 1s ease;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# --- layout: globo a la izquierda, ORI a la derecha ---
-c1, c2 = st.columns([1,1])
-with c1:
-    st.markdown('<div class="ori-bubble">¡Hey! Soy <b>ORI</b> 😎<br>tu compañero en esta aventura</div>',
-                unsafe_allow_html=True)
-with c2:
-    st.image("ori.png", width=220)   # asegúrate que ori.png esté en la misma carpeta que app.py
+st.markdown(f"""
+<div class="ori-container">
+  <div class="ori-bubble">¡Hey! Soy <b>ORI</b> 😎<br>tu compañero en esta aventura</div>
+  <img class="ori-img" src="data:image/png;base64,{ori_b64}" alt="ORI"/>
+</div>
+""", unsafe_allow_html=True)
+
 
