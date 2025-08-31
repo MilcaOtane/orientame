@@ -2,10 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-st.markdown(
-    "<h3 style='text-align: left; color: #0033cc;'><b>OrientaMe ONG</b></h3>",
-    unsafe_allow_html=True
-)
+st.title("OrientaMe ONG")
+
 import streamlit as st
 #---Nombre de la pagina
 st.set_page_config(page_title="OrientaMe", page_icon="🧭", layout="wide")
