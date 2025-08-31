@@ -66,8 +66,7 @@ for col, (icon, title, desc) in zip([col1, col2, col3, col4], cards):
         )
 
 
-##---AAREGLANDO EL BOT 
-
+##---AAREGLANDO A ORIORI BOT 
 import base64
 import streamlit as st
 
@@ -99,14 +98,14 @@ st.markdown("""
   line-height: 1.35;
   box-shadow: 0 6px 14px rgba(0,0,0,.12);
   font-size: 15px;
-  font-family: 'Questrial', sans-serif;   /* 👈 Fuente personalizada */
+  font-family: 'Questrial', sans-serif;
   animation: fadeBounce 1s ease;
 }
 .ori-bubble:after {
   content: "";
   position: absolute;
   right: -10px;
-  top: 18px;
+  top: 25px;   /* 👈 sube o baja la cola del globo */
   width: 0; height: 0;
   border-left: 12px solid #ffffff;
   border-top: 12px solid transparent;
@@ -118,8 +117,8 @@ st.markdown("""
   bottom: 20px;
   right: 20px;
   display: flex;
-  align-items: flex-end;
-  gap: 4px;   /* 👈 ahora más cerquita */
+  align-items: flex-start;   /* 👈 ahora el globo se alinea arriba */
+  gap: 0px;   /* 👈 pegaditos */
   z-index: 9999;
 }
 .ori-img {
@@ -135,4 +134,5 @@ st.markdown(f"""
   <img class="ori-img" src="data:image/png;base64,{ori_b64}" alt="ORI"/>
 </div>
 """, unsafe_allow_html=True)
+
 
