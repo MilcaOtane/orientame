@@ -65,12 +65,6 @@ for col, (icon, title, desc) in zip([col1, col2, col3, col4], cards):
             unsafe_allow_html=True
         )
 
-# --- Imagen de ORI ---
-col_left, col_right = st.columns([2,1])
-with col_right:
-    st.image("ori.png", width=200)
-    st.info("¡Hey! Soy ORI 🐺 tu compañero en esta aventura")
-
 
 ##---AAREGLANDO EL BOT 
 import streamlit as st
