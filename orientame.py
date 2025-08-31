@@ -38,7 +38,7 @@ st.title("OrientaMe ONG")
 
 # --- Título principal ---
 st.markdown(
-    "<h2 style='text-align:center; color:white;'>DESCUBRE TU CAMINO<br>DISEÑA TU FUTURO CON ORIENTAME</h2>",
+    "<h2 style='text-align:center; color:white;'>DESCUBRE TU VOCACIÓN<br>ELIGE TU FUTURO CON ORIENTAME</h2>",
     unsafe_allow_html=True
 )
 
