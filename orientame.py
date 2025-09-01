@@ -275,37 +275,45 @@ elif view_pick == "Edad":
     grp = fdf.groupby("EDAD_BAND")["INGTOT"].mean().reindex(["15-19","20-24","25+","NR"]).dropna()
     st.markdown("<div style='font-size:13px; color:white; text-align:center;'>💡 Ingreso promedio por grupo etario</div>", unsafe_allow_html=True)
     st.bar_chart(grp)
-
-# ==========JUEGO
+###############
+##JUEGUITO
+###############
 import streamlit as st
-import pandas as pd
+import random
 
-df = pd.read_csv("Trim_Abr_May_Jun25.csv")
+# --- Banco de preguntas (puedes ampliar) ---
+preguntas = [
+    {
+        "accion": "Programa código, diseña apps y resuelve bugs.",
+        "opciones": ["Psicólogo", "Ingeniero de Software", "Vendedor"],
+        "respuesta": "Ingeniero de Software"
+    },
+    {
+        "accion": "Atiende pacientes, da diagnósticos y ayuda en la salud mental.",
+        "opciones": ["Psicólogo", "Profesor", "Arquitecto"],
+        "respuesta": "Psicólogo"
+    },
+    {
+        "accion": "Diseña planos, supervisa obras y construye edificios.",
+        "opciones": ["Arquitecto", "Chef", "Músico"],
+        "respuesta": "Arquitecto"
+    }
+]
 
-# Mapping rápido de ocupaciones (ejemplo, ajusta códigos reales)
-ocup_map = {
-    2512: "Programador/a de software",
-    5220: "Vendedor/a de comercio",
-    7111: "Obrero/a de construcción"
-}
+# --- Elegir pregunta al azar ---
+pregunta = random.choice(preguntas)
 
-df["OCU_TXT"] = df["C308_COD"].map(ocup_map)
+st.markdown("## 🎮 Mini-Juego: Adivina la carrera")
+st.write(f"👉 Esta persona: **{pregunta['accion']}**")
 
-st.subheader("🎮 Juego: ¿Quién gana más?")
-st.caption("Basado en datos reales de la EPEN 2025 (Lima y Callao)")
+opcion = st.radio("¿Quién crees que es?", pregunta["opciones"])
 
-opcion = st.radio("Elige tu respuesta:", list(ocup_map.values()))
+if st.button("Responder"):
+    if opcion == pregunta["respuesta"]:
+        st.success("✅ ¡Correcto! 🎉")
+    else:
+        st.error(f"❌ No es correcto. La respuesta era: **{pregunta['respuesta']}**")
 
-# calcular promedios
-res = df.groupby("OCU_TXT")["INGTOT"].mean().dropna()
-
-if opcion in res.index:
-    st.write(f"👉 Tú elegiste: **{opcion}**")
-    ganador = res.idxmax()
-    st.success(f"El que más gana en promedio es: **{ganador}** con S/ {res.max():,.0f}")
-    st.bar_chart(res)
-else:
-    st.info("Aún no tenemos suficientes datos en la base para esta ocupación.")
 
 
 
