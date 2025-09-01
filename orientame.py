@@ -159,7 +159,6 @@ import pandas as pd
 df = pd.read_csv("Trim_Abr_May_Jun25.csv")
 
 # --- Sección mercado laboral ---
-#
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -277,7 +276,18 @@ elif view_pick == "Edad":
     st.markdown("<div style='font-size:13px; color:white; text-align:center;'>💡 Ingreso promedio por grupo etario</div>", unsafe_allow_html=True)
     st.bar_chart(grp)
 
-
+# ==========================
+# Bonus: “¿Y si…?” (simulador)
+# ==========================
+st.write("")
+with st.expander("🎯 ¿Y si estudio más? (simulador lúdico)"):
+    st.caption("Juega con un ‘boost’ hipotético sobre tu ingreso si terminas un ciclo formativo.")
+    boost = st.slider("Elige tu boost por upskilling (0% a 40%)", 0, 40, 15, step=5)
+    if not np.isnan(ing_prom):
+        proj = ing_prom * (1 + boost/100)
+        st.success(f"Con +{boost}% de mejora, **podrías aspirar a ~S/ {proj:,.0f}** (solo un ejemplo didáctico).")
+    else:
+        st.info("Necesitamos ingresos válidos en la muestra para simular 🙂")
 
 
 
