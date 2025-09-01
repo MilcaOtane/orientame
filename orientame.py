@@ -151,7 +151,63 @@ st.markdown(f"""
   <img class="ori-img" src="data:image/png;base64,{ori_b64}" alt="ORI"/>
 </div>
 """, unsafe_allow_html=True)
+##--- TITULO DE LA SECCION MERCADO LABORAL
 
+import streamlit as st
+import pandas as pd
+
+df = pd.read_csv("Trim_Abr_May_Jun25.csv")
+
+# --- Sección mercado laboral ---
+st.markdown(
+    "<h2 style='text-align:center; color:white; margin-top:50px;'>"
+    "📊 ¿Cómo va el mercado laboral en Perú (Lima Metropolitana)?</h2>",
+    unsafe_allow_html=True
+)
+
+# KPIs principales
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    ingreso_prom = df["INGTOT"].mean()
+    st.metric("Ingreso Promedio Mensual (S/)", f"{ingreso_prom:,.0f}")
+
+with col2:
+    horas_prom = df["whoraT"].mean()
+    st.metric("Horas trabajadas por semana", f"{horas_prom:.1f}")
+
+with col3:
+    desempleo = (df["OCUP300"]==3).mean()*100   # si 3 = desempleado
+    st.metric("Tasa de Desempleo", f"{desempleo:.1f}%")
+
+# Gráfico comparativo ingresos por sexo
+sexo_map = {1: "Hombre", 2: "Mujer"}
+df["SEXO"] = df["C201"].map(sexo_map)
+ingreso_sexo = df.groupby("SEXO")["INGTOT"].mean()
+st.bar_chart(ingreso_sexo)
+
+##-----BASE DE DATOS Y WIDGETS
+
+import streamlit as st
+import pandas as pd
+
+df = pd.read_csv("Trim_Abr_May_Jun25.csv")
+
+st.title("📊 Indicadores Laborales EPEN 2025")
+
+# Ingreso promedio total
+ingreso_prom = df["INGTOT"].mean()
+st.metric("Ingreso Promedio Mensual (S/)", f"{ingreso_prom:,.0f}")
+
+# Ingreso promedio por sexo
+sexo_map = {1: "Hombre", 2: "Mujer"}
+df["SEXO"] = df["C201"].map(sexo_map)
+ingreso_sexo = df.groupby("SEXO")["INGTOT"].mean()
+st.bar_chart(ingreso_sexo)
+
+# Horas trabajadas promedio
+horas_prom = df["whoraT"].mean()
+st.metric("Horas trabajadas por semana (prom)", f"{horas_prom:.1f}")
 
 
 
