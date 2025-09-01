@@ -276,18 +276,38 @@ elif view_pick == "Edad":
     st.markdown("<div style='font-size:13px; color:white; text-align:center;'>💡 Ingreso promedio por grupo etario</div>", unsafe_allow_html=True)
     st.bar_chart(grp)
 
-# ==========================
-# Bonus: “¿Y si…?” (simulador)
-# ==========================
-st.write("")
-with st.expander("🎯 ¿Y si estudio más? (simulador lúdico)"):
-    st.caption("Juega con un ‘boost’ hipotético sobre tu ingreso si terminas un ciclo formativo.")
-    boost = st.slider("Elige tu boost por upskilling (0% a 40%)", 0, 40, 15, step=5)
-    if not np.isnan(ing_prom):
-        proj = ing_prom * (1 + boost/100)
-        st.success(f"Con +{boost}% de mejora, **podrías aspirar a ~S/ {proj:,.0f}** (solo un ejemplo didáctico).")
-    else:
-        st.info("Necesitamos ingresos válidos en la muestra para simular 🙂")
+# ==========JUEGO
+import streamlit as st
+import pandas as pd
+
+df = pd.read_csv("Trim_Abr_May_Jun25.csv")
+
+# Mapping rápido de ocupaciones (ejemplo, ajusta códigos reales)
+ocup_map = {
+    2512: "Programador/a de software",
+    5220: "Vendedor/a de comercio",
+    7111: "Obrero/a de construcción"
+}
+
+df["OCU_TXT"] = df["C308_COD"].map(ocup_map)
+
+st.subheader("🎮 Juego: ¿Quién gana más?")
+st.caption("Basado en datos reales de la EPEN 2025 (Lima y Callao)")
+
+opcion = st.radio("Elige tu respuesta:", list(ocup_map.values()))
+
+# calcular promedios
+res = df.groupby("OCU_TXT")["INGTOT"].mean().dropna()
+
+if opcion in res.index:
+    st.write(f"👉 Tú elegiste: **{opcion}**")
+    ganador = res.idxmax()
+    st.success(f"El que más gana en promedio es: **{ganador}** con S/ {res.max():,.0f}")
+    st.bar_chart(res)
+else:
+    st.info("Aún no tenemos suficientes datos en la base para esta ocupación.")
+
+
 
 
 
