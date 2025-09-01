@@ -159,55 +159,137 @@ import pandas as pd
 df = pd.read_csv("Trim_Abr_May_Jun25.csv")
 
 # --- Sección mercado laboral ---
-st.markdown(
-    "<h2 style='text-align:center; color:white; margin-top:50px;'>"
-    "📊 ¿Cómo va el mercado laboral en Perú (Lima Metropolitana)?</h2>",
-    unsafe_allow_html=True
-)
-
-# KPIs principales
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    ingreso_prom = df["INGTOT"].mean()
-    st.metric("Ingreso Promedio Mensual (S/)", f"{ingreso_prom:,.0f}")
-
-with col2:
-    horas_prom = df["whoraT"].mean()
-    st.metric("Horas trabajadas por semana", f"{horas_prom:.1f}")
-
-with col3:
-    desempleo = (df["OCUP300"]==3).mean()*100   # si 3 = desempleado
-    st.metric("Tasa de Desempleo", f"{desempleo:.1f}%")
-
-# Gráfico comparativo ingresos por sexo
-sexo_map = {1: "Hombre", 2: "Mujer"}
-df["SEXO"] = df["C201"].map(sexo_map)
-ingreso_sexo = df.groupby("SEXO")["INGTOT"].mean()
-st.bar_chart(ingreso_sexo)
-
-##-----BASE DE DATOS Y WIDGETS
-
+#
 import streamlit as st
 import pandas as pd
+import numpy as np
 
+# =========================
+# Cargar EPEN (usa tu ruta)
+# =========================
 df = pd.read_csv("Trim_Abr_May_Jun25.csv")
 
-st.title("📊 Indicadores Laborales EPEN 2025")
-
-# Ingreso promedio total
-ingreso_prom = df["INGTOT"].mean()
-st.metric("Ingreso Promedio Mensual (S/)", f"{ingreso_prom:,.0f}")
-
-# Ingreso promedio por sexo
+# ================
+# Mapeos juguetones
+# ================
 sexo_map = {1: "Hombre", 2: "Mujer"}
-df["SEXO"] = df["C201"].map(sexo_map)
-ingreso_sexo = df.groupby("SEXO")["INGTOT"].mean()
-st.bar_chart(ingreso_sexo)
+df["SEXO_TXT"] = df["C201"].map(sexo_map).fillna("Otro/NR")
 
-# Horas trabajadas promedio
-horas_prom = df["whoraT"].mean()
-st.metric("Horas trabajadas por semana (prom)", f"{horas_prom:.1f}")
+# “Edad” en bandas lúdicas (basado en C203 por categorías de la encuesta)
+def band_age(x):
+    if pd.isna(x): return "NR"
+    try:
+        x = int(x)
+    except:
+        return "NR"
+    if x <= 2:      # categorías bajas ~ “adolescentes”
+        return "15-19"
+    elif x <= 4:
+        return "20-24"
+    elif x >= 5:
+        return "25+"
+    return "NR"
+
+df["EDAD_BAND"] = df["C203"].apply(band_age)
+
+# ===========
+# Sección UI
+# ===========
+st.markdown(
+    "<h3 style='text-align:center; color:white; margin: 36px 0 6px;'>🕹️ Zona de Juego: Mercado Laboral (Lima/Callao)</h3>",
+    unsafe_allow_html=True
+)
+st.caption("Filtra, compara y descubre datos clave del trabajo en tu ciudad. *Mini-widgets para decidir mejor tu camino.*")
+
+# -------------
+# Filtros Chips
+# -------------
+cols_f = st.columns(3)
+with cols_f[0]:
+    sex_pick = st.segmented_control("Sexo", options=["Todos", "Hombre", "Mujer", "Otro/NR"], default="Todos")
+with cols_f[1]:
+    age_pick = st.segmented_control("Edad", options=["Todas", "15-19", "20-24", "25+", "NR"], default="Todas")
+with cols_f[2]:
+    view_pick = st.segmented_control("Comparar por", options=["Nada", "Sexo", "Edad"], default="Nada")
+
+fdf = df.copy()
+if sex_pick != "Todos":
+    fdf = fdf[fdf["SEXO_TXT"] == sex_pick]
+if age_pick != "Todas":
+    fdf = fdf[fdf["EDAD_BAND"] == age_pick]
+
+# =====================
+# Mini-KPIs (compactos)
+# =====================
+def mini_card(label, value, suffix=""):
+    st.markdown(
+        f"""
+        <div style="
+          background: rgba(255,255,255,0.92);
+          border:1px solid #e7eefc;
+          border-radius:14px;
+          padding:10px 12px;
+          text-align:center;
+          min-height:70px;">
+          <div style="font-size:12px; color:#334155; margin-bottom:4px;">{label}</div>
+          <div style="font-size:18px; font-weight:800; color:#0f172a;">
+            {value}{suffix}
+          </div>
+        </div>
+        """, unsafe_allow_html=True
+    )
+
+c1, c2, c3 = st.columns(3)
+
+ing_prom = float(np.nanmean(fdf["INGTOT"])) if "INGTOT" in fdf.columns else np.nan
+with c1:
+    mini_card("💰 Ingreso prom. (S/)", f"{ing_prom:,.0f}" if not np.isnan(ing_prom) else "—")
+
+if "whoraT" in fdf.columns:
+    horas = float(np.nanmean(fdf["whoraT"]))
+    with c2:
+        mini_card("⏱️ Horas/sem prom.", f"{horas:.1f}" if not np.isnan(horas) else "—")
+else:
+    with c2:
+        mini_card("⏱️ Horas/sem prom.", "—")
+
+# “Participación ocupada” simple si OCUP300==1 mayormente
+if "OCUP300" in fdf.columns:
+    part = float((fdf["OCUP300"] == 1).mean() * 100)
+    with c3:
+        mini_card("👩‍💼 Ocupación (muestra)", f"{part:.0f}", "%")
+else:
+    with c3:
+        mini_card("👩‍💼 Ocupación (muestra)", "—")
+
+st.write("")  # respiro
+
+# ==========================
+# Modo Comparar (barras mini)
+# ==========================
+if view_pick == "Sexo":
+    grp = fdf.groupby("SEXO_TXT")["INGTOT"].mean().sort_values(ascending=False)
+    st.markdown("<div style='font-size:13px; color:white; text-align:center;'>💡 Ingreso promedio por sexo</div>", unsafe_allow_html=True)
+    st.bar_chart(grp)
+
+elif view_pick == "Edad":
+    grp = fdf.groupby("EDAD_BAND")["INGTOT"].mean().reindex(["15-19","20-24","25+","NR"]).dropna()
+    st.markdown("<div style='font-size:13px; color:white; text-align:center;'>💡 Ingreso promedio por grupo etario</div>", unsafe_allow_html=True)
+    st.bar_chart(grp)
+
+# ==========================
+# Bonus: “¿Y si…?” (simulador)
+# ==========================
+st.write("")
+with st.expander("🎯 ¿Y si estudio más? (simulador lúdico)"):
+    st.caption("Juega con un ‘boost’ hipotético sobre tu ingreso si terminas un ciclo formativo.")
+    boost = st.slider("Elige tu boost por upskilling (0% a 40%)", 0, 40, 15, step=5)
+    if not np.isnan(ing_prom):
+        proj = ing_prom * (1 + boost/100)
+        st.success(f"Con +{boost}% de mejora, **podrías aspirar a ~S/ {proj:,.0f}** (solo un ejemplo didáctico).")
+    else:
+        st.info("Necesitamos ingresos válidos en la muestra para simular 🙂")
+
 
 
 
